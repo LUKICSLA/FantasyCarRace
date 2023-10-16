@@ -13,7 +13,6 @@ public class WaveConfig : ScriptableObject
     [SerializeField] float moveSpeed = 2f;
 
     public GameObject GetEnemyPrefab() { return enemyPrefab; }
-    //public GameObject GetPathPrefab() { return pathPrefab; }
     public List<Transform> GetWaypoints()
     {
         var waveWaypoints = new List<Transform>();
