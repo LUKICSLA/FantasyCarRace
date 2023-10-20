@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("Player")]
+    [SerializeField] int health = 200;
     [SerializeField] float moveSpeed = 10f;
     [SerializeField] float padding = 0.5f;
+
+    [Header("Projectile")]
     [SerializeField] float projectileSpeed = 10f;
     [SerializeField] float projectileFiringPeriod = 0.1f;
     [SerializeField] GameObject projectilePrefab;
+
+// reference parameters
     Coroutine firingCoroutine;
     float xMin, yMin, xMax, yMax;
 
@@ -64,5 +70,22 @@ public class Player : MonoBehaviour
         {
             StopCoroutine(firingCoroutine);
         }
+    }
+
+    private void ProcessHit(DamageDealer damageDealer)
+    {
+        health -= damageDealer.GetDamage();
+        damageDealer.Hit();
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+ 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
+        if (!damageDealer) { return; }
+        ProcessHit(damageDealer);
     }
 }

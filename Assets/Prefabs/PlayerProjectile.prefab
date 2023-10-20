@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 8421332864678309997}
   - component: {fileID: -755108304591198790}
   - component: {fileID: 2799160944069266012}
-  m_Layer: 0
+  - component: {fileID: -6622111004136082996}
+  m_Layer: 10
   m_Name: PlayerProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,9 +143,22 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.16, y: 0.25}
   m_Direction: 0
+--- !u!114 &-6622111004136082996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5706236762564578911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64046172abc2c0d4ea399a65fd812131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 100
