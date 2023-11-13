@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 6471776258395498156}
   - component: {fileID: 188470682924626704}
   - component: {fileID: -7389865446894494105}
-  - component: {fileID: 1712156763880141426}
-  - component: {fileID: 8656457614735603453}
+  - component: {fileID: 3254775435504898138}
+  - component: {fileID: -3567884448089601753}
+  - component: {fileID: -737922066574759093}
+  - component: {fileID: 1797624877479015310}
   m_Layer: 9
   m_Name: Enemy_robot
   m_TagString: Untagged
@@ -99,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d04129c1cf399d54a841c6edb4409b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1712156763880141426
+--- !u!114 &3254775435504898138
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,16 +110,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1249781370084351962}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33a8f42473dd5c149bfb561f64412b7e, type: 3}
+  m_Script: {fileID: 11500000, guid: b822729f1146d404bb8fcf07d2c2c82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  shotCounter: 0
+  health: 200
+  shotCounter: 10
   minTimeBetweenShot: 0.2
   maxTimeBetweenShot: 3
-  projectile: {fileID: 8322054326563590112, guid: 935c649fffae8e84cb0ec70d22390e13, type: 3}
+  projectile: {fileID: 541133354256787823, guid: 92e286fc584b7884bad6cb0a277cc84d, type: 3}
   projectileSpeed: 10
---- !u!61 &8656457614735603453
+  deathSFX: {fileID: 8300000, guid: 71d5f20df80c01b48816f2ed1e65903b, type: 3}
+  deathSFXVolume: 0.7
+  shootSound: {fileID: 8300000, guid: 6601acf509300494da7ef0dd9caba91a, type: 3}
+  shootSoundVolume: 0.2
+  deathVFX: {fileID: 1404681256839616, guid: 3640199bf9dc32f4da57c37d57581f57, type: 3}
+  durationOfExplosion: 1
+--- !u!61 &-3567884448089601753
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,10 +154,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000011920929, y: -0.010209084}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -160,5 +168,45 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.6625063, y: 1.6229229}
+  m_Size: {x: 1.54, y: 1.48}
   m_EdgeRadius: 0
+--- !u!50 &-737922066574759093
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249781370084351962}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &1797624877479015310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249781370084351962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41562bd0ca3694442981bb8470649cf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 100
