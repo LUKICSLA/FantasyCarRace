@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8421332864678309997}
   - component: {fileID: -755108304591198790}
   - component: {fileID: 2799160944069266012}
-  - component: {fileID: -6622111004136082996}
-  m_Layer: 10
+  - component: {fileID: 8431840308193195322}
+  m_Layer: 11
   m_Name: PlayerProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6694, y: 1.6694, z: 1.6694}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -149,7 +149,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.16, y: 0.25}
   m_Direction: 0
---- !u!114 &-6622111004136082996
+--- !u!114 &8431840308193195322
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5706236762564578911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64046172abc2c0d4ea399a65fd812131, type: 3}
+  m_Script: {fileID: 11500000, guid: 41562bd0ca3694442981bb8470649cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 100
+  damage: 50
