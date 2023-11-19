@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 200
+  scoreValue: 25
   shotCounter: 10
   minTimeBetweenShot: 0.2
   maxTimeBetweenShot: 3

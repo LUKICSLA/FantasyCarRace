@@ -30,6 +30,11 @@ public class Player : MonoBehaviour
         Fire();
     }
 
+    public int GetHealth()
+    {
+        return health;
+    }
+
     IEnumerator FireContinously()
     {
         while(ammoCount > 0)
@@ -55,8 +60,31 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
-        if (!damageDealer) { return; }
+       if (!other.gameObject.layer.Equals(12))
+       {
+            DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
+            if (!damageDealer) { return; }
+            ProcessHit(damageDealer);
+        }
+        else
+        {
+            Bonus bonus = other.gameObject.GetComponent<Bonus>();
+            if (!bonus) { return; }
+            GetBonus(bonus);
+        }
+    }
+
+     private void GetBonus(Bonus bonus)
+     {
+        if (bonus.tag == "BonusHealth") 
+        {
+            health += bonus.getHealth();
+        }
+        else if (bonus.tag == "BonusMoveSpeed")
+        {
+            moveSpeed += bonus.getSpeed();
+        }
+        bonus.Die();
     }
 
     private void Move()
