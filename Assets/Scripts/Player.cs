@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
+using System.IO;
 
 public class Player : MonoBehaviour
 {
@@ -14,6 +17,11 @@ public class Player : MonoBehaviour
     [SerializeField] [Range(0, 1)] float deathSFXVolume = 0.7f; //range 0-1
     [SerializeField] AudioClip shootSound;
     [SerializeField] [Range(0, 1)] float shootSoundVolume = 0.2f; //range 0-1
+
+    [SerializeField] public int money = 50;
+    Text jswhText;
+    bool gameStarted = false;
+
     Coroutine firingCoroutine;
     float xMin, yMin, xMax, yMax;
     int ammoCount = 100;
@@ -22,17 +30,16 @@ public class Player : MonoBehaviour
     void Start()
     {
         SetUpMoveBoudaries();
+        StartCoroutine(DailyReward());
+        gameStarted = true;
     }
 
     void Update()
     {
         Move();
         Fire();
-    }
 
-    public int GetHealth()
-    {
-        return health;
+        jswhText.text = "Health: " + health.ToString() + "\nAmmo: " + ammoCount.ToString() + "\nMoney: " + money.ToString();
     }
 
     IEnumerator FireContinously()
@@ -44,7 +51,7 @@ public class Player : MonoBehaviour
             AudioSource.PlayClipAtPoint(shootSound, Camera.main.transform.position, shootSoundVolume);
             ammoCount--;
             yield return new WaitForSeconds(projectileFiringPeriod);
-            Debug.Log("Počet nábojov: " + ammoCount);
+            Debug.Log("Ammo: " + ammoCount);
         }
         canFire = false;
     } 
@@ -60,31 +67,8 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-       if (!other.gameObject.layer.Equals(12))
-       {
-            DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
-            if (!damageDealer) { return; }
-            ProcessHit(damageDealer);
-        }
-        else
-        {
-            Bonus bonus = other.gameObject.GetComponent<Bonus>();
-            if (!bonus) { return; }
-            GetBonus(bonus);
-        }
-    }
-
-     private void GetBonus(Bonus bonus)
-     {
-        if (bonus.tag == "BonusHealth") 
-        {
-            health += bonus.getHealth();
-        }
-        else if (bonus.tag == "BonusMoveSpeed")
-        {
-            moveSpeed += bonus.getSpeed();
-        }
-        bonus.Die();
+        DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
+        if (!damageDealer) { return; }
     }
 
     private void Move()
@@ -93,7 +77,6 @@ public class Player : MonoBehaviour
         var newXPos=Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);
         var deltaY = Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed;
         var newYPos=Mathf.Clamp(transform.position.y + deltaY, yMin, yMax);
-
         transform.position = new Vector2(newXPos, newYPos);
     }
 
@@ -117,6 +100,13 @@ public class Player : MonoBehaviour
         {
             StopCoroutine(firingCoroutine);
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ammoCount = 100;
+            money -= 50;
+            canFire = true;
+        }
     }
 
     private void Die()
@@ -125,4 +115,20 @@ public class Player : MonoBehaviour
         Destroy(gameObject);
         AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position, deathSFXVolume);
     } 
+
+    IEnumerator DailyReward()
+    {
+        while (true)
+        {
+            if (gameStarted)
+            {
+                yield return new WaitForSeconds(24 * 60 * 60);
+                money += 50;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+    }
 }
