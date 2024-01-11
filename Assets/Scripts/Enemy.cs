@@ -1,45 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    [Header("Enemy stats")]
     [SerializeField] float health = 100;
-    [SerializeField] int scoreValue = 100;
-
-    [Header("Shooting")]
     [SerializeField] float shotCounter;
     [SerializeField] float minTimeBetweenShot = 0.2f;
     [SerializeField] float maxTimeBetweenShot = 3f;
     [SerializeField] GameObject projectile;
     [SerializeField] float projectileSpeed = 10f;
-
-    [Header("Sound effects")]
     [SerializeField] AudioClip deathSFX;
-    [SerializeField] [Range(0, 1)] float deathSFXVolume = 0.7f;
+    [SerializeField] [Range(0, 1)] float deathSFXVolume = 0.7f; //range 0-1
     [SerializeField] AudioClip shootSound;
-    [SerializeField] [Range(0, 1)] float shootSoundVolume = 0.2f;
+    [SerializeField] [Range(0, 1)] float shootSoundVolume = 0.2f; //range 0-1
     [SerializeField] GameObject deathVFX;
     [SerializeField] float durationOfExplosion = 1f;
+    [SerializeField] Text text;
+
+    int money;
+    Player player;
 
     void Start()
     {
         shotCounter = Random.Range(minTimeBetweenShot, maxTimeBetweenShot);
+        player = GetComponent<Player>();
     }
 
     void Update()
     {
         CountDownAndShoot();
+        
+        text.text = "Health: " + health.ToString() + "\nShotCounter: " + shotCounter.ToString();
     }
 
     private void Die()
     {
-        FindObjectOfType<GameSession>().AddToScore(scoreValue);
         Destroy(gameObject);
         GameObject explosion = Instantiate(deathVFX,transform.position, transform.rotation);
         Destroy(explosion, durationOfExplosion);
         AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position, deathSFXVolume);
+        player.money += money;
     }
 
     private void CountDownAndShoot()
@@ -66,14 +68,13 @@ public class Enemy : MonoBehaviour
         ProcessHit(damageDealer);
     }
 
-     private void ProcessHit(DamageDealer damageDealer)
+    private void ProcessHit(DamageDealer damageDealer)
     {
         health -= damageDealer.GetDamage();
         damageDealer.Hit();
         if (health <= 0)
         {
             Die();
-            //Destroy(gameObject);
         }
     }
 }
