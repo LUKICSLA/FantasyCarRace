@@ -1,0 +1,70 @@
+name: Remind Obsolete Issues
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight
+
+jobs:
+  remind-obsolete:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install @octokit/rest
+
+      - name: Remind obsolete issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node -e "
+          const { Octokit } = require('@octokit/rest');
+          const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+          
+          (async () => {
+            const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+            const { data: issues } = await octokit.issues.listForRepo({
+              owner,
+              repo,
+              state: 'open',
+            });
+
+            const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+            const now = new Date();
+
+            for (const issue of issues) {
+              const lastUpdated = new Date(issue.updated_at);
+              if ((now - lastUpdated) > THIRTY_DAYS) {
+                await octokit.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: issue.number,
+                  body: 'This issue has been inactive for 30 days. Please review it to see if it is still relevant.',
+                });
+
+                const { data: labels } = await octokit.issues.listLabelsOnIssue({
+                  owner,
+                  repo,
+                  issue_number: issue.number,
+                });
+
+                const labelExists = labels.some(label => label.name === 'obsolete');
+                if (!labelExists) {
+                  await octokit.issues.addLabels({
+                    owner,
+                    repo,
+                    issue_number: issue.number,
+                    labels: ['obsolete'],
+                  });
+                }
+              }
+            }
+          })();
+          "
