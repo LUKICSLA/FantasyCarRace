@@ -3,6 +3,7 @@ name: Remind Obsolete Issues
 on:
   schedule:
     - cron: '0 0 * * *'  # Runs daily at midnight
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
   remind-obsolete:
@@ -59,12 +60,4 @@ jobs:
                 if (!labelExists) {
                   await octokit.issues.addLabels({
                     owner,
-                    repo,
-                    issue_number: issue.number,
-                    labels: ['obsolete'],
-                  });
-                }
-              }
-            }
-          })();
-          "
+                  
